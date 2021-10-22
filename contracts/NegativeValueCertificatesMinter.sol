@@ -6,25 +6,27 @@ interface IIOU {
   function ownerOf(uint256 tokenId) external returns (address owner);
 }
 
-interface IFractionalLossCertificate {
+interface INegativeValueCertificate {
   function safeMint(address to) external;
 }
 
-contract FractionalLossCertificatesMinter {
+contract NegativeValueCertificatesMinter {
   address public owner;
   uint256 public priceInWei;
   bool public isPremint;
+  bool public isLocked;
 
-  IFractionalLossCertificate public flcContract;
+  INegativeValueCertificate public negativeValueCertificateContract;
   IIOU public iouContract;
   mapping (uint256 => bool) public usedIOUs;
 
   constructor(address _flcContract, address _iouContract, address _owner) {
     owner = _owner;
-    flcContract = IFractionalLossCertificate(_flcContract);
+    negativeValueCertificateContract = INegativeValueCertificate(_flcContract);
     iouContract = IIOU(_iouContract);
     priceInWei = 100069531300000000;
     isPremint = true;
+    isLocked = false;
   }
 
   modifier onlyOwner(string memory _msg) {
@@ -44,6 +46,10 @@ contract FractionalLossCertificatesMinter {
      isPremint = !isPremint;
   }
 
+  function flipIsLocked() external onlyOwner("Only owner can flip the lock") {
+     isLocked = !isLocked;
+  }
+
   function mint() public payable {
     _mint(0);
   }
@@ -53,6 +59,8 @@ contract FractionalLossCertificatesMinter {
   }
 
   function _mint(uint256 iouId) internal {
+    require(!isLocked, "Minting contract is locked");
+
     if (isPremint) {
       require(iouContract.ownerOf(iouId) == msg.sender, "You are not the owner of this IOU");
       require(!usedIOUs[iouId], "This IOU has already been used");
@@ -61,7 +69,7 @@ contract FractionalLossCertificatesMinter {
 
     require(msg.value >= priceInWei, "Insufficient payment");
     payable(owner).transfer(msg.value);
-    flcContract.safeMint(msg.sender);
+    negativeValueCertificateContract.safeMint(msg.sender);
 
   }
 

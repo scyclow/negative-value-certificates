@@ -13,8 +13,8 @@ const expectFailure = async (fn, err) => {
 
 const num = n => Number(ethers.utils.formatEther(n))
 
-describe('FractionalLossCertificates', () => {
-  xit('should work', async () => {
+describe('NegativeValueCertificates', () => {
+  it('should work', async () => {
     const [
       _, __,
       devWallet,
@@ -26,61 +26,61 @@ describe('FractionalLossCertificates', () => {
     ] = await ethers.getSigners()
 
 
-    const FractionalLossCert = await ethers.getContractFactory('FractionalLossCertificates', devWallet)
-    const FractionalLossCertContract = await FractionalLossCert.deploy(owner.address)
+    const NegativeValueCert = await ethers.getContractFactory('NegativeValueCertificates', devWallet)
+    const NegativeValueCertContract = await NegativeValueCert.deploy(owner.address)
 
-    await FractionalLossCertContract.deployed()
+    await NegativeValueCertContract.deployed()
 
-    await FractionalLossCertContract.connect(owner).safeMint(owner.address)
-    await FractionalLossCertContract.connect(owner).safeMint(certHolder1.address)
-    await FractionalLossCertContract.connect(owner).safeMint(certHolder2.address)
-    await FractionalLossCertContract.connect(owner).safeMint(certHolder3.address)
+    await NegativeValueCertContract.connect(owner).safeMint(owner.address)
+    await NegativeValueCertContract.connect(owner).safeMint(certHolder1.address)
+    await NegativeValueCertContract.connect(owner).safeMint(certHolder2.address)
+    await NegativeValueCertContract.connect(owner).safeMint(certHolder3.address)
 
-    console.log(await FractionalLossCertContract.connect(owner).ownerOf(1))
-    console.log(await FractionalLossCertContract.connect(owner).ownerOf(2))
-    console.log(await FractionalLossCertContract.connect(owner).ownerOf(3))
-    console.log(await FractionalLossCertContract.connect(owner).ownerOf(4))
+    console.log(await NegativeValueCertContract.connect(owner).ownerOf(1))
+    console.log(await NegativeValueCertContract.connect(owner).ownerOf(2))
+    console.log(await NegativeValueCertContract.connect(owner).ownerOf(3))
+    console.log(await NegativeValueCertContract.connect(owner).ownerOf(4))
 
 
-    const metadata0 = await FractionalLossCertContract.connect(owner).tokenURI(1)
+    const metadata0 = await NegativeValueCertContract.connect(owner).tokenURI(1)
     console.log(Buffer.from(metadata0.split(',')[1], 'base64').toString('utf-8'))
 
-    await FractionalLossCertContract.connect(owner).flipUseURIPointer()
+    await NegativeValueCertContract.connect(owner).flipUseURIPointer()
 
-    await FractionalLossCertContract.connect(owner).updateBaseUrl('www.bing.com/', '.html')
-    const metadata1 = await FractionalLossCertContract.connect(owner).tokenURI(1)
+    await NegativeValueCertContract.connect(owner).updateBaseUrl('www.bing.com/', '.html')
+    const metadata1 = await NegativeValueCertContract.connect(owner).tokenURI(1)
     console.log(metadata1)
 
-    await FractionalLossCertContract.connect(owner).flipUseURIPointer()
+    await NegativeValueCertContract.connect(owner).flipUseURIPointer()
 
-    const metadata2 = await FractionalLossCertContract.connect(owner).tokenURI(1)
+    const metadata2 = await NegativeValueCertContract.connect(owner).tokenURI(1)
     console.log(Buffer.from(metadata2.split(',')[1], 'base64').toString('utf-8'))
 
-    await FractionalLossCertContract.connect(owner).updateMetadataParams(
+    await NegativeValueCertContract.connect(owner).updateMetadataParams(
       'Edition',
       ' out of 256',
       'prettyPictures/',
       '.jpg',
       'www.google.com/tokenPage/',
     )
-    await FractionalLossCertContract.connect(owner).updateProjectDescription('new description')
+    await NegativeValueCertContract.connect(owner).updateProjectDescription('new description')
 
 
-    const metadata3 = await FractionalLossCertContract.connect(owner).tokenURI(1)
+    const metadata3 = await NegativeValueCertContract.connect(owner).tokenURI(1)
     console.log(Buffer.from(metadata3.split(',')[1], 'base64').toString('utf-8'))
 
 
-    await FractionalLossCertContract.connect(owner).emitProjectEvent('Hello project')
-    await FractionalLossCertContract.connect(owner).emitTokenEvent(1, 'Hello token 1')
-    await FractionalLossCertContract.connect(certHolder1).emitTokenEvent(2, 'Hello token 2 holder')
+    await NegativeValueCertContract.connect(owner).emitProjectEvent('Hello project')
+    await NegativeValueCertContract.connect(owner).emitTokenEvent(1, 'Hello token 1')
+    await NegativeValueCertContract.connect(certHolder1).emitTokenEvent(2, 'Hello token 2 holder')
 
-    await expectFailure(() => FractionalLossCertContract.connect(certHolder2).safeMint(certHolder2.address), 'Caller is not the minting address')
-    await expectFailure(() => FractionalLossCertContract.connect(certHolder2).flipUseURIPointer(), 'Ownable:')
-    await expectFailure(() => FractionalLossCertContract.connect(certHolder2).updateBaseUrl('www.wrong.com', '.wrong'), 'Ownable:')
-    await expectFailure(() => FractionalLossCertContract.connect(certHolder2).emitProjectEvent('wrong project event'), 'Ownable:')
-    await expectFailure(() => FractionalLossCertContract.connect(certHolder2).emitTokenEvent(1, 'wrong token event'), 'Only project or token owner can emit token event')
-    await expectFailure(() => FractionalLossCertContract.connect(certHolder2).updateProjectDescription('wong description'), 'Ownable:')
-    await expectFailure(() => FractionalLossCertContract.connect(certHolder2).updateMetadataParams(
+    await expectFailure(() => NegativeValueCertContract.connect(certHolder2).safeMint(certHolder2.address), 'Caller is not the minting address')
+    await expectFailure(() => NegativeValueCertContract.connect(certHolder2).flipUseURIPointer(), 'Ownable:')
+    await expectFailure(() => NegativeValueCertContract.connect(certHolder2).updateBaseUrl('www.wrong.com', '.wrong'), 'Ownable:')
+    await expectFailure(() => NegativeValueCertContract.connect(certHolder2).emitProjectEvent('wrong project event'), 'Ownable:')
+    await expectFailure(() => NegativeValueCertContract.connect(certHolder2).emitTokenEvent(1, 'wrong token event'), 'Only project or token owner can emit token event')
+    await expectFailure(() => NegativeValueCertContract.connect(certHolder2).updateProjectDescription('wong description'), 'Ownable:')
+    await expectFailure(() => NegativeValueCertContract.connect(certHolder2).updateMetadataParams(
       '@',
       ' of 257',
       'wrongPictures/',
@@ -95,7 +95,7 @@ describe('FractionalLossCertificates', () => {
     const mintPriceTooLow = '0.1000695312'
 
     let devWallet, owner, iouHolder, notIouHolder
-    let IOUContract, FractionalLossCertContract, FractionalLossCertMinterContract
+    let IOUContract, NegativeValueCertContract, NegativeValueCertMinterContract
 
     before(async () => {
       [
@@ -117,53 +117,64 @@ describe('FractionalLossCertificates', () => {
       ])
 
       // Setup FLC contracts
-      const FractionalLossCert = await ethers.getContractFactory('FractionalLossCertificates', devWallet)
-      FractionalLossCertContract = await FractionalLossCert.deploy(owner.address)
+      const NegativeValueCert = await ethers.getContractFactory('NegativeValueCertificates', devWallet)
+      NegativeValueCertContract = await NegativeValueCert.deploy(owner.address)
 
-      const FractionalLossCertMinter = await ethers.getContractFactory('FractionalLossCertificatesMinter', devWallet)
-      FractionalLossCertMinterContract = await FractionalLossCertMinter.deploy(
-        FractionalLossCertContract.address,
+      const NegativeValueCertMinter = await ethers.getContractFactory('NegativeValueCertificatesMinter', devWallet)
+      NegativeValueCertMinterContract = await NegativeValueCertMinter.deploy(
+        NegativeValueCertContract.address,
         IOUContract.address,
         owner.address
       )
 
-      await FractionalLossCertContract.deployed()
+      await NegativeValueCertContract.deployed()
+
+      const totalSupply = await NegativeValueCertContract.connect(owner).totalSupply()
+      expect(totalSupply).to.equal(0)
+
     })
 
     it('should succeed with mint #1', async () => {
-      console.log(owner.address)
-      await FractionalLossCertContract.connect(owner).safeMint(owner.address)
+      await NegativeValueCertContract.connect(owner).safeMint(owner.address)
+    })
+
+
+    it('should only let the owner do owner things', async () => {
+      await expectFailure(() => NegativeValueCertMinterContract.connect(iouHolder).flipIsLocked(), 'Only owner')
+      await expectFailure(() => NegativeValueCertMinterContract.connect(iouHolder).flipIsPremint(), 'Only owner')
+      await expectFailure(() => NegativeValueCertMinterContract.connect(iouHolder).transferOwnership(notIouHolder.address), 'Only owner')
+      await expectFailure(() => NegativeValueCertMinterContract.connect(iouHolder).updatePrice(ethers.utils.parseEther(mintPriceTooLow)), 'Only owner')
     })
 
     it('should not let minting through the mint contract work yet', async () => {
       await expectFailure(() =>
-        FractionalLossCertMinterContract
+        NegativeValueCertMinterContract
           .connect(iouHolder)
           .mintWithIOU(1, { value: ethers.utils.parseEther(mintPrice) })
       , 'Caller is not the minting address')
     })
 
     it('should assign the minter', async () => {
-      await FractionalLossCertContract.connect(owner).setMintingAddress(FractionalLossCertMinterContract.address)
+      await NegativeValueCertContract.connect(owner).setMintingAddress(NegativeValueCertMinterContract.address)
     })
 
     it('should fail if payment is too low', async () => {
       await expectFailure(() =>
-        FractionalLossCertMinterContract
+        NegativeValueCertMinterContract
           .connect(iouHolder)
           .mintWithIOU(1, { value: ethers.utils.parseEther(mintPriceTooLow) })
       , 'Insufficient payment')
     })
 
     it('should let an IOU holder mint succeed', async () => {
-      await FractionalLossCertMinterContract
+      await NegativeValueCertMinterContract
         .connect(iouHolder)
         .mintWithIOU(1, { value: ethers.utils.parseEther(mintPrice) })
     })
 
     it('should not let IOU mint twice', async () => {
       await expectFailure(() =>
-        FractionalLossCertMinterContract
+        NegativeValueCertMinterContract
           .connect(iouHolder)
           .mintWithIOU(1, { value: ethers.utils.parseEther(mintPrice) })
       , 'This IOU has already been used')
@@ -171,53 +182,65 @@ describe('FractionalLossCertificates', () => {
 
     it('should not let non-IOU holders mint', async () => {
       await expectFailure(() =>
-        FractionalLossCertMinterContract
+        NegativeValueCertMinterContract
           .connect(notIouHolder)
           .mintWithIOU(2, { value: ethers.utils.parseEther(mintPrice) })
       , 'You are not the owner of this IOU')
 
       await expectFailure(() =>
-        FractionalLossCertMinterContract
+        NegativeValueCertMinterContract
           .connect(notIouHolder)
           .mint({ value: ethers.utils.parseEther(mintPrice) })
       , 'You are not the owner of this IOU')
     })
 
     it('should allow a second flc to be minted', async () => {
-      await FractionalLossCertMinterContract
+      await NegativeValueCertMinterContract
           .connect(iouHolder)
           .mintWithIOU(2, { value: ethers.utils.parseEther(mintPrice) })
     })
 
     it('should not allow minting from the FLC contract directly', async () => {
       await expectFailure(() =>
-        FractionalLossCertContract
+        NegativeValueCertContract
           .connect(iouHolder)
           .safeMint(iouHolder.address)
       , 'Caller is not the minting address')
     })
 
     it('should turn off the pre minter', async () => {
-      await FractionalLossCertMinterContract.connect(owner).flipIsPremint()
+      await NegativeValueCertMinterContract.connect(owner).flipIsPremint()
     })
 
     it('should fail when payment is too low', async () => {
       await expectFailure(() =>
-        FractionalLossCertMinterContract
+        NegativeValueCertMinterContract
           .connect(notIouHolder)
           .mint({ value: ethers.utils.parseEther(mintPriceTooLow) })
       , 'Insufficient payment')
     })
 
+    it('should not allow minting when locked', async () => {
+      await NegativeValueCertMinterContract.connect(owner).flipIsLocked()
+
+      await expectFailure(() =>
+        NegativeValueCertMinterContract
+          .connect(notIouHolder)
+          .mint({ value: ethers.utils.parseEther(mintPrice) })
+      , 'Minting contract is locked')
+
+      await NegativeValueCertMinterContract.connect(owner).flipIsLocked()
+    })
+
     it('should allow a standard mint', async () => {
-      await FractionalLossCertMinterContract
+      await NegativeValueCertMinterContract
         .connect(notIouHolder)
         .mint({ value: ethers.utils.parseEther(mintPrice) })
     })
 
     it('should allow 256 mints', async () => {
       for (let m = 5; m <= 256; m++) {
-        await FractionalLossCertMinterContract
+        await NegativeValueCertMinterContract
           .connect(notIouHolder)
           .mint({ value: ethers.utils.parseEther(mintPrice) })
       }
@@ -225,25 +248,27 @@ describe('FractionalLossCertificates', () => {
 
     it('should not allow a 257th mint', async () => {
       await expectFailure(() =>
-        FractionalLossCertMinterContract
+        NegativeValueCertMinterContract
           .connect(notIouHolder)
           .mint({ value: ethers.utils.parseEther(mintPrice) })
       , 'Can only mint up to 256 tokens.')
     })
 
     it('should all be correct', async () => {
-      const ownerBalance = await FractionalLossCertContract.connect(owner).balanceOf(owner.address)
-      const iouHolderBalance = await FractionalLossCertContract.connect(owner).balanceOf(iouHolder.address)
-      const notIouHolderBalance = await FractionalLossCertContract.connect(owner).balanceOf(notIouHolder.address)
+      const ownerBalance = await NegativeValueCertContract.connect(owner).balanceOf(owner.address)
+      const iouHolderBalance = await NegativeValueCertContract.connect(owner).balanceOf(iouHolder.address)
+      const notIouHolderBalance = await NegativeValueCertContract.connect(owner).balanceOf(notIouHolder.address)
+      const totalSupply = await NegativeValueCertContract.connect(owner).totalSupply()
 
       expect(ownerBalance).to.equal(1)
       expect(iouHolderBalance).to.equal(2)
       expect(notIouHolderBalance).to.equal(253)
+      expect(totalSupply).to.equal(256)
 
-      expect(await FractionalLossCertContract.connect(notIouHolder).ownerOf(10)).to.equal(notIouHolder.address)
+      expect(await NegativeValueCertContract.connect(notIouHolder).ownerOf(10)).to.equal(notIouHolder.address)
 
-      await FractionalLossCertContract.connect(notIouHolder).transferFrom(notIouHolder.address, iouHolder.address, 10)
-      expect(await FractionalLossCertContract.connect(notIouHolder).ownerOf(10)).to.equal(iouHolder.address)
+      await NegativeValueCertContract.connect(notIouHolder).transferFrom(notIouHolder.address, iouHolder.address, 10)
+      expect(await NegativeValueCertContract.connect(notIouHolder).ownerOf(10)).to.equal(iouHolder.address)
     })
 
   })

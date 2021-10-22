@@ -5,23 +5,24 @@ import "./Dependencies.sol";
 pragma solidity ^0.8.2;
 
 
-contract FractionalLossCertificates is ERC721, ERC721Enumerable, ERC721Burnable, Ownable {
+// contract NegativeValueCertificates is ERC721, ERC721Enumerable, ERC721Burnable, Ownable {
+contract NegativeValueCertificates is ERC721, ERC721Burnable, Ownable {
   using Strings for uint256;
 
   uint private _tokenIdCounter;
 
-  bool useURIPointer;
+  bool public useURIPointer;
 
-  string baseUrl;
-  string baseUrlExtension;
-  string baseExternalUrl;
-  string baseImgUrl;
-  string imgExtension;
-  string projectDescription;
-  string metadataExtension;
-  string baseNamePrefix;
-  string baseNameSuffix;
-  address mintingAddress;
+  string public baseUrl;
+  string public baseUrlExtension;
+  string public baseExternalUrl;
+  string public baseImgUrl;
+  string public imgExtension;
+  string public projectDescription;
+  string public metadataExtension;
+  string public baseNamePrefix;
+  string public baseNameSuffix;
+  address public mintingAddress;
 
   address constant public compromisedAddress = 0x7C23C1b7e544e3e805bA675c811E287fc9d71949;
 
@@ -29,19 +30,23 @@ contract FractionalLossCertificates is ERC721, ERC721Enumerable, ERC721Burnable,
   event ProjectEvent(address indexed poster, string content);
   event TokenEvent(address indexed poster, uint256 indexed tokenId, string content);
 
-  constructor(address eventualOwner) ERC721('FractionalLossCertificates', 'FLC', compromisedAddress) {
+  constructor(address eventualOwner) ERC721('NegativeValueCertificates', 'NVC', compromisedAddress) {
     useURIPointer = false;
-    baseNamePrefix = '#';
+    baseNamePrefix = 'Negative Value Certificate #';
     baseNameSuffix = ' of 256';
     baseUrlExtension = '.json';
-    baseUrl = 'https://steviep.xyz/fractional-loss-certificates/tokens/metadata/';
-    baseImgUrl = 'https://steviep.xyz/fractional-loss-certificates/tokens/images/';
-    baseExternalUrl = 'https://steviep.xyz/fractional-loss-certificates';
+    baseUrl = 'https://steviep.xyz/negative-value-certificates/tokens/metadata/';
+    baseImgUrl = 'https://steviep.xyz/negative-value-certificates/tokens/images/';
+    baseExternalUrl = 'https://steviep.xyz/negative-value-certificates?tokenId=';
     imgExtension = '.png';
-    projectDescription = 'This certificate represents a one two hundred fifty-sixth fraction of the 25.6178 ETH loss sustained by Ethereum address: 0x7c23c1b7e544e3e805ba675c811e287fc9d71949 following the public exposure of its private key on October 15, 2021 at 02:44:49 AM (UTC). The -0.1000695313 ETH par value of this certificate represents a proportionate share of the loss, which is payable by the minter upon issuance. This certificate is non-revokable and non-redeemable.';
+    projectDescription = "This certificate's par value of -0.1000695313 ETH represents a one two hundred fifty-sixth share of the 25.6178 ETH loss sustained by Ethereum address: 0x7c23c1b7e544e3e805ba675c811e287fc9d71949 following the public exposure of its private key on October 15, 2021 at 02:44:49 (UTC). This certificate is non-revokable, non-redeemable, and may not be exchangable for monetary or non-monetary compensation.";
     _tokenIdCounter = 1;
     mintingAddress = eventualOwner;
     transferOwnership(eventualOwner);
+  }
+
+  function totalSupply() public view virtual returns (uint256) {
+    return _tokenIdCounter - 1;
   }
 
   function safeMint(address to) public {
@@ -127,25 +132,24 @@ contract FractionalLossCertificates is ERC721, ERC721Enumerable, ERC721Burnable,
 
 
 
-
   // The following functions are overrides required by Solidity.
 
 
 
-  function _beforeTokenTransfer(address from, address to, uint256 tokenId)
-    internal
-    override(ERC721, ERC721Enumerable)
-  {
-    super._beforeTokenTransfer(from, to, tokenId);
-  }
+  // function _beforeTokenTransfer(address from, address to, uint256 tokenId)
+  //   internal
+  //   override(ERC721, ERC721Enumerable)
+  // {
+  //   super._beforeTokenTransfer(from, to, tokenId);
+  // }
 
-  function supportsInterface(bytes4 interfaceId)
-    public
-    view
-    override(ERC721, ERC721Enumerable) returns (bool)
-  {
-      return super.supportsInterface(interfaceId);
-  }
+  // function supportsInterface(bytes4 interfaceId)
+  //   public
+  //   view
+  //   override(ERC721, ERC721Enumerable) returns (bool)
+  // {
+  //     return super.supportsInterface(interfaceId);
+  // }
 }
 
 

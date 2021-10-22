@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Fractional Loss Certificates</title>
+    <title>Negative Value Certificates</title>
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,143 +35,459 @@
 
 
     <style type="text/css">
-
-      body {
+      * {
         margin: 0;
         padding: 0;
+      }
+      body {
         font-family: 'Shippori Mincho B1', serif;
-      }
-
-      canvas {
-        padding: 0;
-        margin: auto;
-        display: block;
-        position: absolute;
-        top: 0;
-        /*bottom: 0;*/
-        left: 0;
-        right: 0;
-        animation: fadein 3s;
-      }
-/*
-
-
-      .slim {
-        max-width: 800px;
-        padding: 10px;
-        margin: auto;
-        text-align: justify;
-      }
-
-      h1 {
-        font-size: 4em;
-      }
-
-      h1, h2, h3 {
-        text-align: center;
-        margin-bottom: 0;
-      }
-      h2 {
-        margin-top: 0.3em;
-        font-size: 3em;
-      }
-
-      h3 a {
-        color: #fff;
-        text-shadow: 0 0;
-      }
-      p {
-        font-size: 25px;
-      }
-
-      /*h2 {
-        text-transform: uppercase;
-      }
-
-
-*/
-
-      h1 {
-        font-size: 150px;
-        line-height: 1;
-        margin-top: 40px;
-        margin-bottom: 60px;
-        letter-spacing: 45px;
-        text-align: center;
-      }
-
-      #overlay-container {
-        z-index: 2;
-        position: absolute;
-        /*height: 100vh;*/
-        width: 100vw;
-        display: flex;
-        justify-content: center;
-        padding: 50px;
-        box-sizing: border-box;
-      }
-
-      #overlay {
-        transition: 500ms;
-        animation: fadein 2s;
-        max-width: 700px;
-        text-align: center;
+        background: #262a66;
+        background: linear-gradient(176deg, #000a16 0%, #262a66 100%);
+        color: #e6003d;
         font-size: 20px;
+
+      }
+      ::selection {
+        background: #7cf803;
+        color: #262a66;
       }
 
-      @keyframes fadein {
-        from { opacity: 0; }
-        to   { opacity: 1; }
+      h1 {
+        text-align: center;
+        font-size: 4em
       }
 
-      @media (max-width: 800px) {
-        h1 {
-          font-size: 125px;
-        }
+      h2 {
+        font-size: 2em;
+        text-align: center;
+      }
 
-        #overlay {
+      h1, h2 {
+        text-shadow: 2px 2px 0 #000a16;
+      }
+
+      header {
+        margin: 2em;
+      }
+
+      p {
+        /*display: inline-block;*/
+        font-size: 1.3em;
+        /*text-align: center;*/
+        padding: 0.5em;
+        line-height: 1.4;
+        width: calc(100% - 1em);
+        max-width: 700px;
+        text-align: justify;
+        text-shadow: 1px 1px 0 #000a16;
+        word-break: break-word;
+      }
+
+      section {
+        margin-top: 2em;
+      }
+
+      a {
+        color: #e6003d;
+        transition: 200ms;
+
+      }
+
+      a:hover {
+        color: #7cf803;
+      }
+
+      .center {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .emblem {
+        max-width: calc(100% - 40px);
+        width: 10em;
+        margin-top: 1em;
+      }
+
+      .countdown {
+        color: #7cf803;
+      }
+
+
+      button {
+        font-family: 'Shippori Mincho B1', serif;
+        background: #7cf803;
+        color: #262a66;
+        border: 2px solid;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 250ms;
+        box-shadow: 0 0 10px #7cf803;
+        -webkit-text-stroke-width: 2px;
+        -webkit-text-stroke-color: #262a66;
+      }
+
+      button:hover, button:focus {
+        background: #03f8e4;
+        color: #e6003d;;
+        -webkit-text-stroke-color: #e6003d;;
+      }
+
+      button:active {
+        background: #9affd2;
+        box-shadow: 0 0 2px #7cf803;;
+      }
+
+      dt, dd {
+        float: left;
+        font-size: 1.3em;
+      }
+
+      dt {
+        width: 280px;
+        margin-bottom: 0.5em;
+      }
+      dd {
+        width: 230px;
+      }
+
+
+      input {
+        background: #161928;
+        border: 2px solid #e6003d;
+        border-radius: 5px;
+        padding: 0.25em;
+        width: 2em;
+        color: #e6003d;
+        font-size: 1em;
+        text-align: center;
+      }
+
+      .iou-purchase {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        width: 100%;
+        max-width: 500px;
+      }
+
+      .iou-purchase label {
+        font-size: 1.5em;
+      }
+
+      #purchase-with-iou {
+        font-size: 1.25em;
+        padding: 0.5em;
+      }
+
+      .purchase-section {
+        border: 2px dashed #7cf803;
+        padding: 2em;
+      }
+
+      #if-tx-error, #if-tx-pending {
+        margin-top: 1em;
+        color: #03f8e4;
+        text-align: center;
+      }
+
+      @media (max-width: 875px) {
+        body {
           font-size: 18px;
         }
       }
 
-      @media (max-width: 650px) {
-        h1 {
-          font-size: 4.5em;
-          letter-spacing: 10px;
-          margin-top: 0;
-          margin-bottom: 30px;
-        }
-        #overlay-container {
-          padding: 65px;
-        }
-        #overlay {
+      @media (max-width: 775px) {
+        body {
           font-size: 15px;
         }
       }
 
-      a {
-        color: black;
+      @media (max-width: 650px) {
+        body {
+          font-size: 12px;
+        }
       }
 
-      ::selection {
-        color: white;
-        background-color: black;
+
+      @media (max-width: 520px) {
+        h1 {
+          font-size: 2.75em;
+        }
       }
     </style>
 
 
+
   </head>
   <body>
-    <div id="overlay-container">
-      <div id="overlay">
-        <h1>IOU</h1>
-        <p>All IOUs are bearer instruments. They should in no way be considered promissory notes. While these token may possibly be exchanged with other parties for monetary or non-monetary compensation, there should be no reasonable expectation of profit from holding them. The Issuer of these IOUs makes no claims or guarantees that they will be redeemable for an asset or service of any kind at a later date. In no event shall the Issuer be held liable for any damages arising from holding an IOU. The Issuer reserves the right to revoke any IOU, change its thumbnail, name, or description, and issue new IOUs at their sole discretion.</p>
-        <a href="https://opensea.io/collection/ious">View on OpenSea</a>
-        <a href="https://etherscan.io/address/0x13178ab07a88f065efe6d06089a6e6ab55ae8a15">Contract</a>
+    <div style="margin: 5px; border: 2px dashed;">
+    <div style="margin: 5px; border: 2px dashed;">
+    <div style="margin: 5px; border: 2px dashed;">
+      <header>
+        <h1>NEGATIVE VALUE</h1>
+        <h1>CERTIFICATE OFFERING</h1>
+        <div class="center">
+          <img class="emblem" src="./component-0x2b93293d969a6d87cab3c96d5aa906c6bb378bb840bd91eef23e2686dc4b9c38.png">
+        </div>
+      </header>
+
+
+
+
+      <section class="center">
+        <dl>
+          <div>
+            <dt>Issued by</dt>
+            <dd><a href="https://steviep.xyz" target="_blank ">steviep.eth</a></dd>
+          </div>
+          <div>
+            <dt>Tokens Issued</dt>
+            <dd id="total-minted">-</dd>
+          </div>
+          <div>
+            <dt>Tokens Offered</dt>
+            <dd>256</dd>
+          </div>
+          <div>
+            <dt>Par Value</dt>
+            <dd>-0.1000695313 ETH</dd>
+          </div>
+
+          <div>
+            <dt>Public Issuance</dt>
+            <dd  class="countdown">01:12:47:59</dd>
+            <!-- if timer is up, either don't show the row or PENDING... -->
+          </div>
+        </dl>
+      </section>
+
+      <section>
+        <div id="if-contract-is-paused">
+            <!-- Countdown timer -->
+            <!-- Contract paused -->
+        </div>
+
+        <div id="if-contract-not-paused">
+          <div id="if-not-connected" class="center">
+            <button id="connect-wallet">Connect Wallet</button>
+          </div>
+
+
+          <div id="if-connected" class="center">
+            <!-- # of NVCs purchased -->
+            <!-- link to account NVC opensea -->
+            <div class="purchase-section">
+              <div id="if-premint" >
+                <div id="if-time-left" class="center">
+                  <!-- countdown timer -->
+                  <h2>IOU Holder Priority Mint</h2>
+                  <p>
+                    All <a href="https://opensea.io/collection/ious" rel="nofollow" target="_blank">IOU</a> holders possess a <a href="https://www.investopedia.com/terms/r/rightoffirstrefusal.asp" target="_blank" rel="nofollow">ROFR</a> on  <a href="" target="_blank">NVCs</a>, and have the right to exercise their ROFR to mint <em>one</em> NVC per IOU for 24 hours before the public issuance.
+                  </p>
+                </div>
+
+                <div id="if-over-time">
+                  <!-- drop tx pending message -->
+                </div>
+
+                <div id="if-iou-balance" class="center" style="display: none;">
+                  <!--
+                    ¿ maybe implement events to get IOUs used ?
+                    ¿ maybe use transactions to which IOUs user owns ?
+                  -->
+
+                  <div class="iou-purchase">
+                    <div style="display: flex; align-items: center; margin-bottom: 1em;">
+                      <label style="margin-right: 0.25em;">IOU #</label>
+                      <input id="iou-id" placeholder="1">
+                    </div>
+                    <button id="purchase-with-iou">Exercise ROFR</button>
+                  </div>
+
+                </div>
+
+                <div id="if-no-iou-balance" style="display: none;">
+                  <p style="text-align: center;"><a href="https://opensea.io/collection/ious" rel="nofollow" target="_blank">Purchase an IOU on OpenSea</a></p>
+                </div>
+              </div>
+
+              <div id="if-public-mint">
+                <!-- purchase button -->
+              </div>
+
+              <div id="if-tx-pending">
+                <!-- loading -->
+              </div>
+
+              <div id="if-tx-error">
+                <!-- display error -->
+              </div>
+
+              <div id="if-tx-success">
+                <!-- link to opensea page -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+
+
+
+
+
+
+
+<!--         <div id="purchase-section" class="center">
+          <button>Purchase</button>
+        </div>
+ -->
+
+
+
+      <section class="center">
+        <p>Each Certificate's par value of -0.1000695313 ETH represents a one two hundred fifty-sixth share of the 25.6178 ETH loss sustained by Ethereum address: <a href="https://etherscan.io/address/0x7C23C1b7e544e3e805bA675c811E287fc9d71949" target="_blank" rel="nofollow">0x7c23c1b7e544e3e805ba675c811e287fc9d71949</a> following the public exposure of its private key on October 15, 2021 at 02:44:49 (UTC).</p>
+
+        <p>These certificates are non-revokable, non-redeemable, and may not be exchangable for monetary or non-monetary compensation.</p>
+
+        <h2>Certificates are backed by the following liabilities:</h2>
+        <h3>Liquid Assets</h3>
+        <dl>
+          <div class="detail-row">
+            <dt><a href="https://etherscan.io/tx/0x23d76c0c1f6df90cd290c78e1c618715dcb93692f5ef029b4ac90e5f7bb0d15f" rel="nofollow" target="_blank">ETH</a></dt>
+            <dd>10.5041</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://etherscan.io/tx/0x2b56e9bc567cfb24e5df8a06a2308966fae1019c6faae3ad9c3858f855527775" rel="nofollow" target="_blank">WETH</a></dt>
+            <dd>1.2163 ETH</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://etherscan.io/tx/0x03f4689dda16986a06870b541ae406d5fc0593984ee1f8a73ce4ec1188b5f1ea" rel="nofollow" target="_blank">USDC</a></dt>
+            <dd>2.7400 ETH</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://etherscan.io/tx/0xe620e247be45e3e08406ba73d41e123ef6d42d0e833562fb8645bafa9018a51e" rel="nofollow" target="_blank">LINK</a></dt>
+            <dd>0.1490 ETH</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://opensea.io/assets/0xc36442b4a4522e871399cd717abdd847ab11fe88/135208" rel="nofollow" target="_blank">Uniswap LP</a></dt>
+            <dd>6.5938 ETH</dd>
+          </div>
+        </dl>
+
+        <h3>Liquid Assets Total: 21.2032</h3>
+
+        <h3>NFTs (All values based on cost basis)</h3>
+        <dl>
+          <div class="detail-row">
+            <dt><a href="https://opensea.io/assets/0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270/152000208" rel="nofollow" target="_blank">Fake Internet Money #208</a></dt>
+            <dd>0.63 ETH</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://opensea.io/assets/0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270/102000752" rel="nofollow" target="_blank">I Saw It in a Dream #752</a></dt>
+            <dd>0.118 ETH</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://opensea.io/assets/0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270/102000847" rel="nofollow" target="_blank">I Saw It in a Dream #847</a></dt>
+            <dd>0.113 ETH</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://opensea.io/assets/0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270/102000997" rel="nofollow" target="_blank">I Saw It in a Dream #997</a></dt>
+            <dd>0.116 ETH</dd>
+          </div>
+
+
+          <div class="detail-row">
+            <dt><a href="https://opensea.io/assets/0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270/102000206" rel="nofollow" target="_blank">I Saw It in a Dream #206</a></dt>
+            <dd>0.094 ETH</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://opensea.io/assets/0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270/48000642" rel="nofollow" target="_blank">Gen 3 #642</a></dt>
+            <dd>0.087 ETH</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://opensea.io/assets/0x495f947276749ce646f68ac8c248420045cb7b5e/74131744438972540339666837148097951894952133662590729948081471587039597035521" rel="nofollow" target="_blank">Lazlo Lissitsky - Crafting for Coughs</a></dt>
+            <dd>0.045 ETH</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://opensea.io/assets/0x495f947276749ce646f68ac8c248420045cb7b5e/74131744438972540339666837148097951894952133662590729948081471493581108674561" rel="nofollow" target="_blank">Lazlo Lissitsky - “Setting the Alarmist Clock”</a></dt>
+            <dd>0.072 ETH</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://opensea.io/assets/0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270/106000129" rel="nofollow" target="_blank">Radiance #129</a></dt>
+            <dd>0.45 ETH</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://opensea.io/assets/0x495f947276749ce646f68ac8c248420045cb7b5e/64582080536744971998716657472697058248208589501275408193173312130271338823681" rel="nofollow" target="_blank">Exterior #138</a></dt>
+            <dd>0.91 ETH</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://opensea.io/assets/0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270/117004625" rel="nofollow" target="_blank">Transitions #4625</a></dt>
+            <dd>0.137 ETH</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://opensea.io/assets/0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270/117000185" rel="nofollow" target="_blank">Transitions #185</a></dt>
+            <dd>0.118 ETH</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://opensea.io/assets/0x80416304142fa37929f8a4eee83ee7d2dac12d7c/498" rel="nofollow" target="_blank">Generativemasks #4297</a></dt>
+            <dd>0.105 ETH</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://opensea.io/assets/0x099689220846644f87d1137665cded7bf3422747/8221" rel="nofollow" target="_blank">Robotto #8221</a></dt>
+            <dd>0.213 ETH</dd>
+          </div>
+
+          <div class="detail-row">
+            <dt><a href="https://opensea.io/assets/0xbace7e22f06554339911a03b8e0ae28203da9598/1660" rel="nofollow" target="_blank">CryptoArte #1660</a></dt>
+            <dd>0.169 ETH</dd>
+          </div>
+
+        </dl>
+
+        <h3>NFT Total: 3.377</h3>
+
+        <h3>Total Gas Spent on Asset Recovery:</h3>
+
+        <h3>Grand Total:</h3>
+
+      </section>
+
+
+      <div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
       </div>
     </div>
+    </div>
+    </div>
+
   </body>
-    <script src="./min.p5.js"></script>
-    <script src="./render.js"></script>
+  <script src="./min.ethers.js"></script>
+  <script type="text/javascript" src="./index.js"></script>
 
 </html>
