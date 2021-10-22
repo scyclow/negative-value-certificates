@@ -1,4 +1,8 @@
 'use strict';
+
+
+
+
 ;(async () => {
 ////////////////////////////////////////////////////
 
@@ -20,6 +24,38 @@ const $ifContractIsLocked = document.getElementById('if-contract-is-locked')
 const $ifContractNotLocked = document.getElementById('if-contract-not-locked')
 const $ifPremint = document.getElementById('if-premint')
 const $ifPublicMint = document.getElementById('if-public-mint')
+const $countdown = document.getElementById('countdown')
+const $etherscanLink = document.getElementById('etherscan-link')
+
+let contractState = ''
+
+
+
+
+//// SET DROP TIME
+const fmt = (n) => {
+  const r = Math.floor(n)
+  if (r < 10) return '0' + r
+  else return '' + r
+}
+const dropTime = new Date('2021-10-24T16:00:00.000Z').getTime()
+const setDropTime = () => {
+  const now = Date.now()
+  const diff = Math.max(dropTime - now, 0)
+
+
+  const h = (diff / 86400000) * 24
+  const m = (h - Math.floor(h)) * 60
+  const s = (m - Math.floor(m)) * 60
+
+  const timeLeft = h && m && s
+    ? `${fmt(h)}:${fmt(m)}:${fmt(s)}`
+    : contractState || 'Tx Pending...'
+
+  $countdown.innerHTML = timeLeft
+}
+setInterval(setDropTime, 1000)
+setDropTime()
 
 
 
@@ -79,9 +115,9 @@ switch (chainId) {
   // rinkeby
   case 4:
     console.log(`Running on rinkeby (${chainId})`)
-    IOU_ADDRESS = ''
-    NVC_ADDRESS = ''
-    NVC_MINTER_ADDRESS = ''
+    IOU_ADDRESS = '0xDc3e1513428999Ff3b8BD513fB65932eb4d0Fe67'
+    NVC_ADDRESS = '0x1CB4F92A1f3311584277F37C79e88F93cC769E34'
+    NVC_MINTER_ADDRESS = '0xd42f8857e5f967ee52ff0F53eBEc24a837f2D921'
     break
 
   // mainnet
@@ -168,7 +204,8 @@ async function exerciseIOUROFR() {
     }
 
 
-    await nvcMinterContract.connect(signer).mintWithIOU(iouID, { value: mintPrice })
+    const tx = await nvcMinterContract.connect(signer).mintWithIOU(iouID, { value: mintPrice })
+    $etherscanLink.href = `https://etherscan.io/tx/${tx.hash}`
 
     const interval = setInterval(async () => {
       const success = (await nvcContract.balanceOf(currentAddress)).toNumber() > (await balancePromise).toNumber()
@@ -209,7 +246,8 @@ async function standardPurchase() {
 
     const balancePromise = nvcContract.balanceOf(currentAddress)
 
-    await nvcMinterContract.connect(signer).mint({ value: mintPrice })
+    const tx = await nvcMinterContract.connect(signer).mint({ value: mintPrice })
+    $etherscanLink.href = `https://etherscan.io/tx/${tx.hash}`
 
     const interval = setInterval(async () => {
       const success = (await nvcContract.balanceOf(currentAddress)).toNumber() > (await balancePromise).toNumber()
@@ -239,9 +277,9 @@ function displayError(e) {
 
 function setLoading(bool) {
   if (bool) {
-    $ifTxPending.innerHTML = 'Transaction Pending...'
+    $ifTxPending.style.display = null
   } else {
-    $ifTxPending.innerHTML = ''
+    $ifTxPending.style.display = 'none'
   }
 }
 
@@ -265,21 +303,23 @@ async function retrieveGlobalData() {
 
   $totalMinted.innerHTML = totalNvcsMinted.toString()
 
-  if (isLocked) {
-    $ifContractIsLocked.style.display = null
-    $ifContractNotLocked.style.display = 'none'
-  } else {
-    $ifContractIsLocked.style.display = 'none'
-    $ifContractNotLocked.style.display = null
-  }
-
   if (isPremint) {
     $ifPremint.style.display = null
     $ifPublicMint.style.display = 'none'
   } else {
+    contractState = 'OPEN'
     $purchaseSection.style.border = 'none'
     $ifPremint.style.display = 'none'
     $ifPublicMint.style.display = null
+  }
+
+  if (isLocked) {
+    $ifContractIsLocked.style.display = null
+    $ifContractNotLocked.style.display = 'none'
+    contractState = 'Contract LOCKED'
+  } else {
+    $ifContractIsLocked.style.display = 'none'
+    $ifContractNotLocked.style.display = null
   }
   setTimeout(retrieveGlobalData, 2000)
 }

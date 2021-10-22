@@ -24,6 +24,11 @@ async function main(contractType) {
     iouHolder.address,
     iouHolder.address,
     iouHolder.address,
+    '0xacdc434144ce2f9ddf7836c82f4717e5929102f5',//8
+    '0xacdc434144ce2f9ddf7836c82f4717e5929102f5',//9
+    '0xacdc434144ce2f9ddf7836c82f4717e5929102f5',//10
+    '0xacdc434144ce2f9ddf7836c82f4717e5929102f5',//11
+    '0xacdc434144ce2f9ddf7836c82f4717e5929102f5',//12
   ], {
     gasLimit: 999999
   })
@@ -66,9 +71,9 @@ async function main(contractType) {
   //   .mintWithIOU(2, { value: ethers.utils.parseEther(mintPrice), gasLimit: 999999 })
 
 
-  await NegativeValueCertMinterContract
-    .connect(owner)
-    .flipIsPremint()
+  // await NegativeValueCertMinterContract
+  //   .connect(owner)
+  //   .flipIsPremint()
 
 
 

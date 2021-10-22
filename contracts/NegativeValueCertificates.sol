@@ -25,7 +25,7 @@ contract NegativeValueCertificates is ERC721, ERC721Burnable, Ownable {
   address public mintingAddress;
 
   address constant public compromisedAddress = 0x7C23C1b7e544e3e805bA675c811E287fc9d71949;
-  uint constant public parValue = -100069531300000000;
+  int256 constant public parValue = -100069531300000000;
 
 
   event ProjectEvent(address indexed poster, string indexed eventType, string content);

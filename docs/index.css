@@ -1,0 +1,314 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Shippori Mincho B1', serif;
+  background: #262a66;
+  background: linear-gradient(176deg, #000a16 0%, #262a66 100%);
+  color: #e6003d;
+  font-size: 20px;
+}
+
+::selection {
+  background: #7cf803;
+  color: #262a66;
+}
+
+h1 {
+  text-align: center;
+  font-size: 4em
+}
+
+h2 {
+  font-size: 2em;
+  padding: 0 25px;
+  text-align: center;
+}
+
+h1, h2, h3 {
+  text-shadow: 2px 2px 0 #000a16;
+}
+
+h3 {
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+header {
+  margin: 2em;
+}
+
+p {
+  font-size: 1.3em;
+  padding: 0.5em;
+  line-height: 1.5;
+  max-width: calc(100% - 7em);
+  /*max-width: 700px;*/
+  text-align: justify;
+  text-shadow: 1px 1px 0 #000a16;
+  word-break: break-word;
+}
+
+section {
+  margin-top: 2em;
+}
+
+a {
+  color: #e6003d;
+  transition: 200ms;
+
+}
+
+a:hover {
+  color: #7cf803;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.emblem {
+  max-width: calc(100% - 40px);
+  width: 10em;
+  margin-top: 1.2em;
+  margin-bottom: 0.6em;
+}
+
+
+.emblem {
+  max-width: calc(100% - 40px);
+  width: 10em;
+  margin-top: 1.2em;
+  margin-bottom: 0.6em;
+}
+
+.emblem-small {
+  width: 3em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.emblem-loading {
+  width: 5em;
+  animation: loading infinite 3s cubic-bezier(0.67, 0.08, 0.3, 0.88);
+}
+
+@keyframes loading {
+
+  0% {
+    transform: rotate(0deg) ;
+  }
+
+ /* 50% {
+    transform: rotate(360deg);
+  }*/
+  100% {
+    transform: rotate(720deg);
+  }
+
+}
+
+
+.highlight {
+  color: #7cf803;
+}
+
+
+button {
+  font-family: 'Shippori Mincho B1', serif;
+  background: #7cf803;
+  color: #262a66;
+  border: 2px solid;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 250ms;
+  box-shadow: 0 0 10px #7cf803;
+  -webkit-text-stroke-width: 0.06em;
+  -webkit-text-stroke-color: #262a66;
+}
+
+button:hover, button:focus {
+  background: #03f8e4;
+  color: #e6003d;;
+  -webkit-text-stroke-color: #e6003d;;
+}
+
+button:active {
+  background: #9affd2;
+  box-shadow: 0 0 2px #7cf803;;
+}
+
+#connect-wallet, #standard-purchase {
+  font-size: 2.5em;
+  padding: 0.5em;
+}
+
+#connect-wallet {
+  margin: 2em auto;
+}
+
+dt, dd {
+  display: inline-block;
+  font-size: 1.3em;
+}
+
+dt {
+  width: 12em;
+  padding-right: 2em;
+}
+dd {
+  width: 9.5em;
+  margin-bottom: 0.5em;
+}
+
+
+input {
+  background: #abf9f3;
+  border: 2px solid #e6003d;
+  border-radius: 5px;
+  padding: 0.25em;
+  width: 2em;
+  color: #e6003d;
+  font-size: 1em;
+  text-align: center;
+}
+
+input:focus {
+  outline: none;
+}
+
+.dashed-border-desktop, .dashed-border-mobile {
+  margin: 5px;
+  border: 2px dashed;
+}
+
+#iou-purchase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+  max-width: 500px;
+  padding: 0.5em;
+}
+
+#iou-purchase label {
+  font-size: 1.5em;
+}
+
+#purchase-with-iou {
+  font-size: 1.25em;
+  padding: 0.5em;
+}
+
+#purchase-section {
+  border: 2px dashed #03f8e4;
+  padding: 2em;
+  margin: 0 2em;
+}
+
+#purchase-section p {
+  max-width: calc(100% - 1em);
+
+}
+#if-tx-error, #if-tx-pending, #if-tx-success {
+  margin-top: 1em;
+  color: #03f8e4;
+  text-align: center;
+}
+
+#if-tx-success a {
+  color: #03f8e4;
+}
+
+#if-tx-success {
+  font-size: 1.2em;
+}
+
+.detail-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.75em;
+
+}
+
+@media (max-width: 900px) {
+  body {
+    font-size: 18px;
+  }
+
+
+}
+
+@media (max-width: 815px) {
+  body {
+    font-size: 15px;
+  }
+  .dashed-border-desktop {
+    border: 0;
+    margin: 0;
+  }
+}
+
+@media (max-width: 675px) {
+  body {
+    font-size: 12px;
+  }
+
+}
+
+
+@media (max-width: 545px) {
+  h1 {
+    font-size: 2.75em;
+  }
+
+  .detail-row {
+    flex-direction: column;
+  }
+
+  dt, dd {
+    float: none;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+  }
+
+  dd {
+    margin-bottom: 1em;
+  }
+
+  #purchase-section {
+    margin: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  p {
+    max-width: calc(100% - 3em);
+  }
+}
+
+.fadein {
+  animation: fadein 2s;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.clearfix {
+  overflow: auto;
+}
+
+.accounting-setion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3em;
+}
