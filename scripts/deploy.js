@@ -17,6 +17,11 @@ async function main(contractType) {
   console.log('minting IOUs')
   await IOUContract.connect(owner).batchSafeMint([
     owner.address,
+    owner.address,
+    owner.address,
+    owner.address,
+    iouHolder.address,
+    iouHolder.address,
     iouHolder.address,
     iouHolder.address,
   ], {
@@ -44,15 +49,26 @@ async function main(contractType) {
   console.log('connect FLC minter')
   await NegativeValueCertContract.connect(owner).setMintingAddress(NegativeValueCertMinterContract.address)
 
-  console.log('mint with IOU 1')
-  await NegativeValueCertMinterContract
-    .connect(iouHolder)
-    .mintWithIOU(1, { value: ethers.utils.parseEther(mintPrice), gasLimit: 999999 })
 
-  console.log('mint with IOU 2')
+
+  // await NegativeValueCertMinterContract
+  //   .connect(owner)
+  //   .flipIsLocked()
+
+  // console.log('mint with IOU 1')
+  // await NegativeValueCertMinterContract
+  //   .connect(iouHolder)
+  //   .mintWithIOU(1, { value: ethers.utils.parseEther(mintPrice), gasLimit: 999999 })
+
+  // console.log('mint with IOU 2')
+  // await NegativeValueCertMinterContract
+  //   .connect(iouHolder)
+  //   .mintWithIOU(2, { value: ethers.utils.parseEther(mintPrice), gasLimit: 999999 })
+
+
   await NegativeValueCertMinterContract
-    .connect(iouHolder)
-    .mintWithIOU(2, { value: ethers.utils.parseEther(mintPrice), gasLimit: 999999 })
+    .connect(owner)
+    .flipIsPremint()
 
 
 

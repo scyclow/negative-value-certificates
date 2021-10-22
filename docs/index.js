@@ -4,14 +4,22 @@
 
 
 const $connectWallet = document.getElementById('connect-wallet')
+const $totalMinted = document.getElementById('total-minted')
 const $ifNotConnected = document.getElementById('if-not-connected')
 const $ifConnected = document.getElementById('if-connected')
 const $ifIOUBalance = document.getElementById('if-iou-balance')
 const $ifNoIOUBalance = document.getElementById('if-no-iou-balance')
 const $ifTxError = document.getElementById('if-tx-error')
 const $ifTxPending = document.getElementById('if-tx-pending')
+const $ifTxSuccess = document.getElementById('if-tx-success')
+const $purchaseSection = document.getElementById('purchase-section')
 const $purchaseWithIOU = document.getElementById('purchase-with-iou')
+const $standardPurchase = document.getElementById('standard-purchase')
 const $iouPurchase = document.getElementById('iou-purchase')
+const $ifContractIsLocked = document.getElementById('if-contract-is-locked')
+const $ifContractNotLocked = document.getElementById('if-contract-not-locked')
+const $ifPremint = document.getElementById('if-premint')
+const $ifPublicMint = document.getElementById('if-public-mint')
 
 
 
@@ -37,7 +45,8 @@ const nvcABI = [
 ]
 
 const nvcMinter = [
-  'function isPremint() view returns (string)',
+  'function isPremint() view returns (bool)',
+  'function isLocked() view returns (bool)',
   'function mint() public payable',
   'function mintWithIOU(uint256 iouId) public payable',
   'function donate() public payable',
@@ -121,9 +130,13 @@ if (connectedWallet) {
 
 async function exerciseIOUROFR() {
   try {
+    displayError('')
+    setLoading(true)
+
     const iouIDValue = document.getElementById('iou-id').value
     const iouID = Number(iouIDValue)
     if (iouIDValue === '' || iouID === NaN || iouID < 0 || iouID > 249) {
+      setLoading(false)
       displayError('IOU ID must be a number between 0 and 250')
       return
     }
@@ -143,32 +156,34 @@ async function exerciseIOUROFR() {
     const balancePromise = nvcContract.balanceOf(currentAddress)
 
     if (iouAlreadyUsed) {
+      setLoading(false)
       displayError(`IOU #${iouID} has already been used to mint a NVC`)
       return
     }
 
     if (ownerOfIOU !== currentAddress) {
+      setLoading(false)
       displayError(`This address does not own IOU #${iouID}`)
       return
     }
 
-    displayError('')
-    setLoading(true)
 
     await nvcMinterContract.connect(signer).mintWithIOU(iouID, { value: mintPrice })
 
     const interval = setInterval(async () => {
       const success = (await nvcContract.balanceOf(currentAddress)).toNumber() > (await balancePromise).toNumber()
       if (success) {
-        // hide $iouPurchase
-        // display success message
+        $iouPurchase.style.display = 'none'
+        $ifTxSuccess.style.display = null
+
         setLoading(false)
-        clearIntercal(interval)
+        clearInterval(interval)
       }
     }, 1000)
 
   } catch (e) {
     console.log(e)
+    setLoading(false)
     displayError(e.message)
   }
 
@@ -177,10 +192,46 @@ async function exerciseIOUROFR() {
 $purchaseWithIOU.onclick = exerciseIOUROFR
 
 
+// standard purchase
+
+async function standardPurchase() {
+  try {
+    displayError('')
+    setLoading(true)
+
+    const [
+      mintPrice,
+      currentAddress
+    ] = await Promise.all([
+      nvcMinterContract.priceInWei(),
+      isConnected()
+    ])
+
+    const balancePromise = nvcContract.balanceOf(currentAddress)
+
+    await nvcMinterContract.connect(signer).mint({ value: mintPrice })
+
+    const interval = setInterval(async () => {
+      const success = (await nvcContract.balanceOf(currentAddress)).toNumber() > (await balancePromise).toNumber()
+      if (success) {
+        $standardPurchase.style.display = 'none'
+        $ifTxSuccess.style.display = null
+
+        setLoading(false)
+        clearInterval(interval)
+      }
+    }, 1000)
+
+  } catch (e) {
+    console.log(e)
+    setLoading(false)
+    displayError(e.message)
+  }
+}
+
+$standardPurchase.onclick = standardPurchase
 
 
-
-// TODO
 function displayError(e) {
   if (e) console.log(e)
   $ifTxError.innerHTML = e
@@ -200,31 +251,61 @@ function setLoading(bool) {
 
 // TIMERS
 
+async function retrieveGlobalData() {
 
-
-async function retrieveData() {
-  // nvcs minted by this wallet
-  const address = await isConnected()
   const [
     totalNvcsMinted,
-    nvcBalance
+    isLocked,
+    isPremint
   ] = await Promise.all([
     nvcContract.totalSupply(),
+    nvcMinterContract.isLocked(),
+    nvcMinterContract.isPremint(),
+  ])
+
+  $totalMinted.innerHTML = totalNvcsMinted.toString()
+
+  if (isLocked) {
+    $ifContractIsLocked.style.display = null
+    $ifContractNotLocked.style.display = 'none'
+  } else {
+    $ifContractIsLocked.style.display = 'none'
+    $ifContractNotLocked.style.display = null
+  }
+
+  if (isPremint) {
+    $ifPremint.style.display = null
+    $ifPublicMint.style.display = 'none'
+  } else {
+    $purchaseSection.style.border = 'none'
+    $ifPremint.style.display = 'none'
+    $ifPublicMint.style.display = null
+  }
+  setTimeout(retrieveGlobalData, 2000)
+}
+retrieveGlobalData()
+
+
+async function retrieveAddrData(address) {
+  // nvcs minted by this wallet
+  const [
+    nvcBalance
+  ] = await Promise.all([
     nvcContract.balanceOf(address)
   ])
 
-  document.getElementById('total-minted').innerHTML = totalNvcsMinted.toString()
-  setTimeout(retrieveData, 2000)
+  // do something
+  setTimeout(() => retrieveAddrData(address), 2000)
 }
 
 
 
 async function onWalletConnected(address) {
-  retrieveData()
   $ifNotConnected.style.display = 'none'
   $ifConnected.style.display = null
 
 
+  retrieveAddrData(address)
   retrieveIOUData(address)
 
 }

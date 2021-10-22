@@ -70,15 +70,15 @@ describe('NegativeValueCertificates', () => {
     console.log(Buffer.from(metadata3.split(',')[1], 'base64').toString('utf-8'))
 
 
-    await NegativeValueCertContract.connect(owner).emitProjectEvent('Hello project')
-    await NegativeValueCertContract.connect(owner).emitTokenEvent(1, 'Hello token 1')
-    await NegativeValueCertContract.connect(certHolder1).emitTokenEvent(2, 'Hello token 2 holder')
+    await NegativeValueCertContract.connect(owner).emitProjectEvent('projectGreeting', 'Hello project')
+    await NegativeValueCertContract.connect(owner).emitTokenEvent(1, 'tokenGreeting', 'Hello token 1')
+    await NegativeValueCertContract.connect(certHolder1).emitTokenEvent(2, 'tokenGreeting', 'Hello token 2 holder')
 
     await expectFailure(() => NegativeValueCertContract.connect(certHolder2).safeMint(certHolder2.address), 'Caller is not the minting address')
     await expectFailure(() => NegativeValueCertContract.connect(certHolder2).flipUseURIPointer(), 'Ownable:')
     await expectFailure(() => NegativeValueCertContract.connect(certHolder2).updateBaseUrl('www.wrong.com', '.wrong'), 'Ownable:')
-    await expectFailure(() => NegativeValueCertContract.connect(certHolder2).emitProjectEvent('wrong project event'), 'Ownable:')
-    await expectFailure(() => NegativeValueCertContract.connect(certHolder2).emitTokenEvent(1, 'wrong token event'), 'Only project or token owner can emit token event')
+    await expectFailure(() => NegativeValueCertContract.connect(certHolder2).emitProjectEvent('projectGreeting', 'wrong project event'), 'Ownable:')
+    await expectFailure(() => NegativeValueCertContract.connect(certHolder2).emitTokenEvent(1, 'tokenGreeting', 'wrong token event'), 'Only project or token owner can emit token event')
     await expectFailure(() => NegativeValueCertContract.connect(certHolder2).updateProjectDescription('wong description'), 'Ownable:')
     await expectFailure(() => NegativeValueCertContract.connect(certHolder2).updateMetadataParams(
       '@',
@@ -164,6 +164,18 @@ describe('NegativeValueCertificates', () => {
           .connect(iouHolder)
           .mintWithIOU(1, { value: ethers.utils.parseEther(mintPriceTooLow) })
       , 'Insufficient payment')
+    })
+
+    it('should not allow minting when locked in premint', async () => {
+      await NegativeValueCertMinterContract.connect(owner).flipIsLocked()
+
+      await expectFailure(() =>
+        await NegativeValueCertMinterContract
+          .connect(iouHolder)
+          .mintWithIOU(1, { value: ethers.utils.parseEther(mintPrice) })
+      , 'Minting contract is locked')
+
+      await NegativeValueCertMinterContract.connect(owner).flipIsLocked()
     })
 
     it('should let an IOU holder mint succeed', async () => {

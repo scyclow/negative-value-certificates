@@ -110,7 +110,7 @@
         margin-top: 1em;
       }
 
-      .countdown {
+      .highlight {
         color: #7cf803;
       }
 
@@ -124,7 +124,7 @@
         cursor: pointer;
         transition: 250ms;
         box-shadow: 0 0 10px #7cf803;
-        -webkit-text-stroke-width: 2px;
+        -webkit-text-stroke-width: 0.06em;
         -webkit-text-stroke-color: #262a66;
       }
 
@@ -137,6 +137,15 @@
       button:active {
         background: #9affd2;
         box-shadow: 0 0 2px #7cf803;;
+      }
+
+      #connect-wallet, #standard-purchase {
+        font-size: 2.5em;
+        padding: 0.5em;
+      }
+
+      #connect-wallet {
+        margin: 2em auto;
       }
 
       dt, dd {
@@ -164,16 +173,17 @@
         text-align: center;
       }
 
-      .iou-purchase {
+      #iou-purchase {
         display: flex;
         flex-direction: column;
         align-items: center;
 
         width: 100%;
         max-width: 500px;
+        padding: 0.5em;
       }
 
-      .iou-purchase label {
+      #iou-purchase label {
         font-size: 1.5em;
       }
 
@@ -182,21 +192,32 @@
         padding: 0.5em;
       }
 
-      .purchase-section {
-        border: 2px dashed #7cf803;
+      #purchase-section {
+        border: 2px dashed #03f8e4;
         padding: 2em;
+        margin: 0 1em;
       }
 
-      #if-tx-error, #if-tx-pending {
+      #if-tx-error, #if-tx-pending, #if-tx-success {
         margin-top: 1em;
         color: #03f8e4;
         text-align: center;
+      }
+
+      #if-tx-success a {
+        color: #03f8e4;
+      }
+
+      #if-tx-success {
+        font-size: 1.2em;
       }
 
       @media (max-width: 875px) {
         body {
           font-size: 18px;
         }
+
+
       }
 
       @media (max-width: 775px) {
@@ -235,8 +256,6 @@
       </header>
 
 
-
-
       <section class="center">
         <dl>
           <div>
@@ -258,19 +277,18 @@
 
           <div>
             <dt>Public Issuance</dt>
-            <dd  class="countdown">01:12:47:59</dd>
+            <dd  class="highlight">01:12:47:59</dd>
             <!-- if timer is up, either don't show the row or PENDING... -->
           </div>
         </dl>
       </section>
 
       <section>
-        <div id="if-contract-is-paused">
-            <!-- Countdown timer -->
-            <!-- Contract paused -->
+        <div id="if-contract-is-locked" class="center" style="display: none;">
+          <p>The Negative Value Certificate is currently locked. A priority mint will take place for IOU holders on <span class=highlight>Saturday 10/23/2021</span>, with the public issuance taking place the following day.</p>
         </div>
 
-        <div id="if-contract-not-paused">
+        <div id="if-contract-not-locked">
           <div id="if-not-connected" class="center">
             <button id="connect-wallet">Connect Wallet</button>
           </div>
@@ -279,13 +297,13 @@
           <div id="if-connected" class="center">
             <!-- # of NVCs purchased -->
             <!-- link to account NVC opensea -->
-            <div class="purchase-section">
+            <div id="purchase-section">
               <div id="if-premint" >
                 <div id="if-time-left" class="center">
                   <!-- countdown timer -->
                   <h2>IOU Holder Priority Mint</h2>
                   <p>
-                    All <a href="https://opensea.io/collection/ious" rel="nofollow" target="_blank">IOU</a> holders possess a <a href="https://www.investopedia.com/terms/r/rightoffirstrefusal.asp" target="_blank" rel="nofollow">ROFR</a> on  <a href="" target="_blank">NVCs</a>, and have the right to exercise their ROFR to mint <em>one</em> NVC per IOU for 24 hours before the public issuance.
+                    All <a href="https://opensea.io/collection/ious" rel="nofollow" target="_blank">IOU</a> holders possess a <a href="https://www.investopedia.com/terms/r/rightoffirstrefusal.asp" target="_blank" rel="nofollow">ROFR</a> on  <a href="" target="_blank">NVCs</a>, and have the right to exercise their ROFR to mint <em>one</em> NVC per IOU for the 24 hour period preceeding the public issuance.
                   </p>
                 </div>
 
@@ -299,7 +317,7 @@
                     ¿ maybe use transactions to which IOUs user owns ?
                   -->
 
-                  <div class="iou-purchase">
+                  <div id="iou-purchase">
                     <div style="display: flex; align-items: center; margin-bottom: 1em;">
                       <label style="margin-right: 0.25em;">IOU #</label>
                       <input id="iou-id" placeholder="1">
@@ -315,7 +333,7 @@
               </div>
 
               <div id="if-public-mint">
-                <!-- purchase button -->
+                <button id="standard-purchase">Purchase</button>
               </div>
 
               <div id="if-tx-pending">
@@ -326,8 +344,9 @@
                 <!-- display error -->
               </div>
 
-              <div id="if-tx-success">
-                <!-- link to opensea page -->
+              <div id="if-tx-success" style="display: none">
+                <!-- TODO make better success component -->
+                You've successfully purchased a Negative Value Certificate! <a href="https://opensea.io/account?search[sortBy]=LAST_TRANSFER_DATE&search[query]=NegativeValueCertificates" rel="nofollow" target="_blank">View it on OpenSea</a>
               </div>
             </div>
           </div>

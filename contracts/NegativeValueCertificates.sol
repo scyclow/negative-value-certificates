@@ -25,10 +25,11 @@ contract NegativeValueCertificates is ERC721, ERC721Burnable, Ownable {
   address public mintingAddress;
 
   address constant public compromisedAddress = 0x7C23C1b7e544e3e805bA675c811E287fc9d71949;
+  uint constant public parValue = -100069531300000000;
 
 
-  event ProjectEvent(address indexed poster, string content);
-  event TokenEvent(address indexed poster, uint256 indexed tokenId, string content);
+  event ProjectEvent(address indexed poster, string indexed eventType, string content);
+  event TokenEvent(address indexed poster, uint256 indexed tokenId, string indexed eventType, string content);
 
   constructor(address eventualOwner) ERC721('NegativeValueCertificates', 'NVC', compromisedAddress) {
     useURIPointer = false;
@@ -118,16 +119,16 @@ contract NegativeValueCertificates is ERC721, ERC721Burnable, Ownable {
     baseExternalUrl = _baseExternalUrl;
   }
 
-  function emitProjectEvent(string memory _content) public onlyOwner {
-    emit ProjectEvent(_msgSender(), _content);
+  function emitProjectEvent(string memory _eventType, string memory _content) public onlyOwner {
+    emit ProjectEvent(_msgSender(), _eventType, _content);
   }
 
-  function emitTokenEvent(uint256 tokenId, string memory _content) public {
+  function emitTokenEvent(uint256 tokenId, string memory _eventType, string memory _content) public {
     require(
       owner() == _msgSender() || ERC721.ownerOf(tokenId) == _msgSender(),
       'Only project or token owner can emit token event'
     );
-    emit TokenEvent(_msgSender(), tokenId, _content);
+    emit TokenEvent(_msgSender(), tokenId, _eventType, _content);
   }
 
 
