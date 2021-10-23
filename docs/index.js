@@ -123,8 +123,8 @@ switch (chainId) {
   // mainnet
   case 1:
     console.log(`Running on mainnet (${chainId})`)
-    IOU_ADDRESS = ''
-    NVC_ADDRESS = ''
+    IOU_ADDRESS = '0x13178ab07a88f065efe6d06089a6e6ab55ae8a15'
+    NVC_ADDRESS = '0xe6da43bcfa2ae0ed8c6ac4b3beea1ec9ae65daba'
     NVC_MINTER_ADDRESS = ''
     break
 }
@@ -180,16 +180,24 @@ async function exerciseIOUROFR() {
     const [
       mintPrice,
       iouAlreadyUsed,
+      totalMinted,
       ownerOfIOU,
       currentAddress
     ] = await Promise.all([
       nvcMinterContract.priceInWei(),
       nvcMinterContract.usedIOUs(iouID),
+      nvcContract.totalSupply(),
       iouContract.ownerOf(iouID),
       isConnected()
     ])
 
     const balancePromise = nvcContract.balanceOf(currentAddress)
+
+    if (totalMinted.toNumber() === 256) {
+      setLoading(false)
+      displayError(`All 256 NVCs have been issued`)
+      return
+    }
 
     if (iouAlreadyUsed) {
       setLoading(false)
@@ -238,13 +246,23 @@ async function standardPurchase() {
 
     const [
       mintPrice,
+      totalMinted,
       currentAddress
     ] = await Promise.all([
       nvcMinterContract.priceInWei(),
+      nvcContract.totalSupply(),
       isConnected()
     ])
 
     const balancePromise = nvcContract.balanceOf(currentAddress)
+
+
+    if (totalMinted.toNumber() === 256) {
+      setLoading(false)
+      displayError(`All 256 NVCs have been issued`)
+      return
+    }
+
 
     const tx = await nvcMinterContract.connect(signer).mint({ value: mintPrice })
     $etherscanLink.href = `https://etherscan.io/tx/${tx.hash}`
@@ -303,29 +321,31 @@ async function retrieveGlobalData() {
 
   $totalMinted.innerHTML = totalNvcsMinted.toString()
 
-  if (isPremint) {
-    $ifPremint.style.display = null
-    $ifPublicMint.style.display = 'none'
-    $purchaseSection.style.display = null
-  } else {
-    contractState = 'OPEN'
-    $purchaseSection.style.border = 'none'
-    $ifPremint.style.display = 'none'
-    $ifPublicMint.style.display = null
-  }
-
-  if (isLocked) {
-    $ifContractIsLocked.style.display = null
-    $ifContractNotLocked.style.display = 'none'
-    contractState = 'Contract LOCKED'
-  } else {
-    $ifContractIsLocked.style.display = 'none'
-    $ifContractNotLocked.style.display = null
-  }
-
   if (totalNvcsMinted.toNumber() === 256) {
     contractState = 'COMPLETED'
+    $purchaseSection.style.display = 'none'
+  } else {
+    if (isPremint) {
+      $ifPremint.style.display = null
+      $ifPublicMint.style.display = 'none'
+      $purchaseSection.style.display = null
+    } else {
+      contractState = 'OPEN'
+      $purchaseSection.style.border = 'none'
+      $ifPremint.style.display = 'none'
+      $ifPublicMint.style.display = null
+    }
+
+    if (isLocked) {
+      $ifContractIsLocked.style.display = null
+      $ifContractNotLocked.style.display = 'none'
+      contractState = 'Contract LOCKED'
+    } else {
+      $ifContractIsLocked.style.display = 'none'
+      $ifContractNotLocked.style.display = null
+    }
   }
+
   setTimeout(retrieveGlobalData, 2000)
 }
 retrieveGlobalData()
