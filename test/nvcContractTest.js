@@ -93,8 +93,8 @@ describe('NegativeValueCertificates', () => {
   })
 
   describe('minter integration', () => {
-    const mintPrice = '0.09937740987'
-    const mintPriceTooLow = '0.09937740986'
+    const mintPrice = '0.0993774'
+    const mintPriceTooLow = '0.0993773'
 
     let devWallet, owner, iouHolder, notIouHolder
     let IOUContract, NegativeValueCertContract, NegativeValueCertMinterContract

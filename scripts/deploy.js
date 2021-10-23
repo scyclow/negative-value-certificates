@@ -24,21 +24,16 @@ async function main(contractType) {
     iouHolder.address,
     iouHolder.address,
     iouHolder.address,
-    '0xacdc434144ce2f9ddf7836c82f4717e5929102f5',//8
-    '0xacdc434144ce2f9ddf7836c82f4717e5929102f5',//9
-    '0xacdc434144ce2f9ddf7836c82f4717e5929102f5',//10
-    '0xacdc434144ce2f9ddf7836c82f4717e5929102f5',//11
-    '0xacdc434144ce2f9ddf7836c82f4717e5929102f5',//12
   ], {
     gasLimit: 999999
   })
 
-  // Setup FLC contracts
-  console.log('deploying FLC')
+  // Setup NVC contracts
+  console.log('deploying NVC')
   const NegativeValueCert = await ethers.getContractFactory('NegativeValueCertificates', devWallet)
   NegativeValueCertContract = await NegativeValueCert.deploy(owner.address)
 
-  console.log('deploying FLC minter')
+  console.log('deploying NVC minter')
   const NegativeValueCertMinter = await ethers.getContractFactory('NegativeValueCertificatesMinter', devWallet)
   NegativeValueCertMinterContract = await NegativeValueCertMinter.deploy(
     NegativeValueCertContract.address,
@@ -47,11 +42,14 @@ async function main(contractType) {
   )
 
 
-  console.log('minting FLC #1')
+  console.log('minting NVC #1')
   await NegativeValueCertContract.connect(owner).safeMint(owner.address)
 
+  // mint to dev wallet
+  await NegativeValueCertContract.connect(owner).safeMint('0x450d033F75b5dF8b0Fc36430baf5CD2c80533aa3')
 
-  console.log('connect FLC minter')
+
+  console.log('connect NVC minter')
   await NegativeValueCertContract.connect(owner).setMintingAddress(NegativeValueCertMinterContract.address)
 
 
