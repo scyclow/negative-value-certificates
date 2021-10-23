@@ -322,6 +322,10 @@ async function retrieveGlobalData() {
     $ifContractIsLocked.style.display = 'none'
     $ifContractNotLocked.style.display = null
   }
+
+  if (totalNvcsMinted.toNumber() === 256) {
+    contractState = 'COMPLETED'
+  }
   setTimeout(retrieveGlobalData, 2000)
 }
 retrieveGlobalData()

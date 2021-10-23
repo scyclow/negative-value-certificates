@@ -40,7 +40,7 @@ contract NegativeValueCertificates is ERC721, ERC721Burnable, Ownable {
     baseImgUrl = 'https://steviep.xyz/negative-value-certificates/tokens/images/';
     baseExternalUrl = 'https://steviep.xyz/negative-value-certificates?tokenId=';
     imgExtension = '.png';
-    projectDescription = "This certificate has a par value of -0.09937741 ETH, which is backed by a one two hundred fifty-sixth share of the 25.4406 ETH loss sustained by Ethereum address: 0x7c23c1b7e544e3e805ba675c811e287fc9d71949 following the public exposure of its private key on October 15, 2021 at 02:44:49 (UTC).cThe negative par value indicates that owners of this certificate have a reasonable expectation of loss from holding it.";
+    projectDescription = "This certificate has a par value of -0.09937741 ETH, which is backed by a one two hundred fifty-sixth share of the 25.4406 ETH loss sustained by Ethereum address: 0x7c23c1b7e544e3e805ba675c811e287fc9d71949 following the public exposure of its private key on October 15, 2021 at 02:44:49 (UTC). The negative par value indicates that owners of this certificate have a reasonable expectation of loss from holding it.";
     license = 'CC BY-NC 4.0';
     _tokenIdCounter = 1;
     mintingAddress = eventualOwner;
