@@ -125,7 +125,7 @@ switch (chainId) {
     console.log(`Running on mainnet (${chainId})`)
     IOU_ADDRESS = '0x13178ab07a88f065efe6d06089a6e6ab55ae8a15'
     NVC_ADDRESS = '0xe6da43bcfa2ae0ed8c6ac4b3beea1ec9ae65daba'
-    NVC_MINTER_ADDRESS = ''
+    NVC_MINTER_ADDRESS = '0x4F857a92269DC9B42EDB7fab491679DEcb46e848'
     break
 }
 
