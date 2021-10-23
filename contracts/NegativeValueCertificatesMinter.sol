@@ -20,11 +20,11 @@ contract NegativeValueCertificatesMinter {
   IIOU public iouContract;
   mapping (uint256 => bool) public usedIOUs;
 
-  constructor(address _flcContract, address _iouContract, address _owner) {
+  constructor(address _nvcContract, address _iouContract, address _owner) {
     owner = _owner;
-    negativeValueCertificateContract = INegativeValueCertificate(_flcContract);
+    negativeValueCertificateContract = INegativeValueCertificate(_nvcContract);
     iouContract = IIOU(_iouContract);
-    priceInWei = 100069531300000000;
+    priceInWei = 99377340000000000;
     isPremint = true;
     isLocked = false;
   }

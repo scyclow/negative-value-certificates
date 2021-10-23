@@ -62,6 +62,7 @@ describe('NegativeValueCertificates', () => {
       'prettyPictures/',
       '.jpg',
       'www.google.com/tokenPage/',
+      'MIT'
     )
     await NegativeValueCertContract.connect(owner).updateProjectDescription('new description')
 
@@ -86,13 +87,14 @@ describe('NegativeValueCertificates', () => {
       'wrongPictures/',
       '.wrong',
       'www.wrong.com/wrongPage/',
+      'ISC'
     ), 'Ownable:')
 
   })
 
   describe('minter integration', () => {
-    const mintPrice = '0.1000695313'
-    const mintPriceTooLow = '0.1000695312'
+    const mintPrice = '0.09937740987'
+    const mintPriceTooLow = '0.09937740986'
 
     let devWallet, owner, iouHolder, notIouHolder
     let IOUContract, NegativeValueCertContract, NegativeValueCertMinterContract
@@ -116,7 +118,7 @@ describe('NegativeValueCertificates', () => {
         iouHolder.address,
       ])
 
-      // Setup FLC contracts
+      // Setup NVC contracts
       const NegativeValueCert = await ethers.getContractFactory('NegativeValueCertificates', devWallet)
       NegativeValueCertContract = await NegativeValueCert.deploy(owner.address)
 
@@ -169,7 +171,7 @@ describe('NegativeValueCertificates', () => {
     it('should not allow minting when locked in premint', async () => {
       await NegativeValueCertMinterContract.connect(owner).flipIsLocked()
 
-      await expectFailure(() =>
+      await expectFailure(async () =>
         await NegativeValueCertMinterContract
           .connect(iouHolder)
           .mintWithIOU(1, { value: ethers.utils.parseEther(mintPrice) })
@@ -206,13 +208,13 @@ describe('NegativeValueCertificates', () => {
       , 'You are not the owner of this IOU')
     })
 
-    it('should allow a second flc to be minted', async () => {
+    it('should allow a second NVC to be minted', async () => {
       await NegativeValueCertMinterContract
           .connect(iouHolder)
           .mintWithIOU(2, { value: ethers.utils.parseEther(mintPrice) })
     })
 
-    it('should not allow minting from the FLC contract directly', async () => {
+    it('should not allow minting from the NVC contract directly', async () => {
       await expectFailure(() =>
         NegativeValueCertContract
           .connect(iouHolder)

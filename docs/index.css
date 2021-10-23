@@ -97,6 +97,10 @@ a:hover {
   animation: loading infinite 3s cubic-bezier(0.67, 0.08, 0.3, 0.88);
 }
 
+.shift-left-desktop {
+  margin-left: -10px
+}
+
 @keyframes loading {
 
   0% {
@@ -252,13 +256,19 @@ input:focus {
     border: 0;
     margin: 0;
   }
+
+  .shift-left-desktop {
+    margin-left: -6px;
+  }
 }
 
 @media (max-width: 675px) {
   body {
     font-size: 12px;
   }
-
+  .shift-left-desktop {
+    margin-left: -5px;
+  }
 }
 
 
@@ -290,6 +300,10 @@ input:focus {
 
   p {
     max-width: calc(100% - 3em);
+  }
+
+  .shift-left-desktop {
+    margin-left: 0;
   }
 }
 

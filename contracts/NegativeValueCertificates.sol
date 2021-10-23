@@ -5,7 +5,6 @@ import "./Dependencies.sol";
 pragma solidity ^0.8.2;
 
 
-// contract NegativeValueCertificates is ERC721, ERC721Enumerable, ERC721Burnable, Ownable {
 contract NegativeValueCertificates is ERC721, ERC721Burnable, Ownable {
   using Strings for uint256;
 
@@ -22,10 +21,11 @@ contract NegativeValueCertificates is ERC721, ERC721Burnable, Ownable {
   string public metadataExtension;
   string public baseNamePrefix;
   string public baseNameSuffix;
+  string public license;
   address public mintingAddress;
 
   address constant public compromisedAddress = 0x7C23C1b7e544e3e805bA675c811E287fc9d71949;
-  int256 constant public parValue = -100069531300000000;
+  int256 constant public parValue = -99377340000000000;
 
 
   event ProjectEvent(address indexed poster, string indexed eventType, string content);
@@ -40,7 +40,8 @@ contract NegativeValueCertificates is ERC721, ERC721Burnable, Ownable {
     baseImgUrl = 'https://steviep.xyz/negative-value-certificates/tokens/images/';
     baseExternalUrl = 'https://steviep.xyz/negative-value-certificates?tokenId=';
     imgExtension = '.png';
-    projectDescription = "This certificate's par value of -0.1000695313 ETH represents a one two hundred fifty-sixth share of the 25.6178 ETH loss sustained by Ethereum address: 0x7c23c1b7e544e3e805ba675c811e287fc9d71949 following the public exposure of its private key on October 15, 2021 at 02:44:49 (UTC). This certificate is non-revokable, non-redeemable, and may not be exchangable for monetary or non-monetary compensation.";
+    projectDescription = "This certificate has a par value of -0.09937741 ETH, which is backed by a one two hundred fifty-sixth share of the 25.4406 ETH loss sustained by Ethereum address: 0x7c23c1b7e544e3e805ba675c811e287fc9d71949 following the public exposure of its private key on October 15, 2021 at 02:44:49 (UTC).cThe negative par value indicates that owners of this certificate have a reasonable expectation of loss from holding it.";
+    license = 'CC BY-NC 4.0';
     _tokenIdCounter = 1;
     mintingAddress = eventualOwner;
     transferOwnership(eventualOwner);
@@ -76,7 +77,7 @@ contract NegativeValueCertificates is ERC721, ERC721Burnable, Ownable {
         string(
           abi.encodePacked(
             '{"name": "', baseNamePrefix, tokenId.toString(), baseNameSuffix,
-            '", "description": "', projectDescription,
+            '", "description": "', projectDescription, ' | License: ', license,
             '", "image": "', baseImgUrl, tokenString, imgExtension,
             '", "external_url": "', baseExternalUrl, tokenString,
             '"}'
@@ -110,13 +111,15 @@ contract NegativeValueCertificates is ERC721, ERC721Burnable, Ownable {
     string memory _baseNameSuffix,
     string memory _baseImgUrl,
     string memory _imgExtension,
-    string memory _baseExternalUrl
+    string memory _baseExternalUrl,
+    string memory _license
   ) public onlyOwner {
     baseNamePrefix = _baseNamePrefix;
     baseNameSuffix = _baseNameSuffix;
     baseImgUrl = _baseImgUrl;
     imgExtension = _imgExtension;
     baseExternalUrl = _baseExternalUrl;
+    license = _license;
   }
 
   function emitProjectEvent(string memory _eventType, string memory _content) public onlyOwner {
@@ -131,26 +134,6 @@ contract NegativeValueCertificates is ERC721, ERC721Burnable, Ownable {
     emit TokenEvent(_msgSender(), tokenId, _eventType, _content);
   }
 
-
-
-  // The following functions are overrides required by Solidity.
-
-
-
-  // function _beforeTokenTransfer(address from, address to, uint256 tokenId)
-  //   internal
-  //   override(ERC721, ERC721Enumerable)
-  // {
-  //   super._beforeTokenTransfer(from, to, tokenId);
-  // }
-
-  // function supportsInterface(bytes4 interfaceId)
-  //   public
-  //   view
-  //   override(ERC721, ERC721Enumerable) returns (bool)
-  // {
-  //     return super.supportsInterface(interfaceId);
-  // }
 }
 
 

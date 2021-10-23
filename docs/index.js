@@ -306,6 +306,7 @@ async function retrieveGlobalData() {
   if (isPremint) {
     $ifPremint.style.display = null
     $ifPublicMint.style.display = 'none'
+    $purchaseSection.style.display = null
   } else {
     contractState = 'OPEN'
     $purchaseSection.style.border = 'none'
