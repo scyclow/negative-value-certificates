@@ -240,6 +240,13 @@ input:focus {
 
 }
 
+.displayed-cert {
+  max-width: calc(100vw - 5em);
+  max-height: 30em;
+
+  margin: 3em 0;
+}
+
 @media (max-width: 900px) {
   body {
     font-size: 18px;
