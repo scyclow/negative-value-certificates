@@ -35,15 +35,17 @@ let contractState = ''
 
 
 const queryParams = location.search.substring(1)
-const { tokenId } = JSON.parse('{"' + decodeURI(queryParams).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
-if (tokenId && Number(tokenId) > 0 && Number(tokenId) < 257) {
-  $headerLine2.innerHTML = `CERTIFICATE ${tokenId}/256`
-  $ifTokenIdIncluded.style.display = null
-  $ifTokenIdIncluded.innerHTML = `
-    <a href="https://opensea.io/assets/0xe6da43bcfa2ae0ed8c6ac4b3beea1ec9ae65daba/${tokenId}" target="_blank" rel="nofollow">
-      <img src="./tokens/images/${tokenId}.png" class="displayed-cert">
-    </a>
-  `
+if (queryParams) {
+  const { tokenId } = JSON.parse('{"' + decodeURI(queryParams).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
+  if (tokenId && Number(tokenId) > 0 && Number(tokenId) < 257) {
+    $headerLine2.innerHTML = `CERTIFICATE ${tokenId}/256`
+    $ifTokenIdIncluded.style.display = null
+    $ifTokenIdIncluded.innerHTML = `
+      <a href="https://opensea.io/assets/0xe6da43bcfa2ae0ed8c6ac4b3beea1ec9ae65daba/${tokenId}" target="_blank" rel="nofollow">
+        <img src="./tokens/images/${tokenId}.png" class="displayed-cert">
+      </a>
+    `
+  }
 }
 
 
