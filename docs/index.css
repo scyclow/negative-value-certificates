@@ -245,6 +245,7 @@ input:focus {
   max-height: 30em;
 
   margin: 3em 0;
+  border: 2px solid;
 }
 
 @media (max-width: 900px) {
