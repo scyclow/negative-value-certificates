@@ -152,7 +152,7 @@ if (connectedWallet) {
 
 
     } catch (e) {
-      alert(`Error Connecting Wallat: ${e.message}`)
+      alert(`Error Connecting Wallet: ${e.message}`)
       debugger
       console.error(e)
     }
@@ -281,7 +281,13 @@ async function standardPurchase() {
   } catch (e) {
     console.log(e)
     setLoading(false)
-    displayError(e.message)
+
+    if (e.message.includes('insufficient funds for intrinsic transaction cost')) {
+      console.log(e.message)
+      displayError(`You must have at least 0.09937734 ETH in this wallet to purchase a Negative Value Certificate`)
+    } else {
+      displayError(e.message)
+    }
   }
 }
 
@@ -332,6 +338,7 @@ async function retrieveGlobalData() {
     } else {
       contractState = 'OPEN'
       $purchaseSection.style.border = 'none'
+      $purchaseSection.style.display = null
       $ifPremint.style.display = 'none'
       $ifPublicMint.style.display = null
     }
